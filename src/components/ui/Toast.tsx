@@ -1,0 +1,62 @@
+"use client";
+
+import { CheckCircle2, XCircle } from "lucide-react";
+import { createContext, useCallback, useContext, useMemo, useRef, useState, type ReactNode } from "react";
+
+type ToastKind = "success" | "error";
+type ToastItem = { id: number; kind: ToastKind; message: string };
+type ToastApi = { success: (message: string) => void; error: (message: string) => void };
+
+const ToastContext = createContext<ToastApi | null>(null);
+
+export function useToast(): ToastApi {
+  const ctx = useContext(ToastContext);
+  if (!ctx) throw new Error("useToast harus dipakai di dalam <ToastProvider>");
+  return ctx;
+}
+
+export function ToastProvider({ children }: { children: ReactNode }) {
+  const [items, setItems] = useState<ToastItem[]>([]);
+  const nextId = useRef(1);
+
+  const push = useCallback((kind: ToastKind, message: string) => {
+    const id = nextId.current++;
+    setItems((prev) => [...prev, { id, kind, message }]);
+    setTimeout(() => setItems((prev) => prev.filter((t) => t.id !== id)), kind === "error" ? 6000 : 3500);
+  }, []);
+
+  const api = useMemo<ToastApi>(
+    () => ({
+      success: (m) => push("success", m),
+      error: (m) => push("error", m),
+    }),
+    [push],
+  );
+
+  return (
+    <ToastContext.Provider value={api}>
+      {children}
+      <div
+        aria-live="polite"
+        className="pointer-events-none fixed inset-x-0 bottom-36 z-[100] flex flex-col items-center gap-2 px-4 lg:bottom-20 lg:items-end lg:px-6"
+      >
+        {items.map((t) => (
+          <div
+            key={t.id}
+            role={t.kind === "error" ? "alert" : "status"}
+            className={`pointer-events-auto flex max-w-sm items-start gap-2 rounded-md px-4 py-3 text-sm text-white shadow-lg ${
+              t.kind === "success" ? "bg-emerald-600" : "bg-red-600"
+            }`}
+          >
+            {t.kind === "success" ? (
+              <CheckCircle2 size={18} className="mt-0.5 shrink-0" aria-hidden="true" />
+            ) : (
+              <XCircle size={18} className="mt-0.5 shrink-0" aria-hidden="true" />
+            )}
+            <span>{t.message}</span>
+          </div>
+        ))}
+      </div>
+    </ToastContext.Provider>
+  );
+}
