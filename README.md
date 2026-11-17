@@ -10,9 +10,10 @@ Website portofolio dengan panel admin (`/admin`) untuk mengedit semua teks dan g
 
 1. Buat project di [supabase.com](https://supabase.com).
 2. Buka **SQL Editor** → New query → tempel seluruh isi `supabase/migrations/0001_schema.sql` → **Run**.
-3. Query baru → tempel seluruh isi `supabase/seed.sql` → **Run** (mengisi data awal Nadia: profil, 17 project, sertifikat, dll).
-4. **Authentication → Users → Add user → Create new user**: isi email + password owner, centang *Auto Confirm User*.
-5. **Authentication → Sign In / Providers**: matikan **Allow new users to sign up** (tidak ada register publik; hanya akun yang kamu buat manual yang bisa login).
+3. Query baru → tempel seluruh isi `supabase/migrations/0002_grants.sql` → **Run** (hak akses role; project Supabase baru tidak memberikannya otomatis, tanpa ini muncul error `permission denied for table ...`).
+4. Query baru → tempel seluruh isi `supabase/seed.sql` → **Run** (mengisi data awal Nadia: profil, 17 project, sertifikat, dll).
+5. **Authentication → Users → Add user → Create new user**: isi email + password owner, centang *Auto Confirm User*.
+6. **Authentication → Sign In / Providers**: matikan **Allow new users to sign up** (tidak ada register publik; hanya akun yang kamu buat manual yang bisa login).
 
 Yang dibuat oleh migration: 10 tabel, index, trigger (maks 3 project featured, maks 6 langkah process, `updated_at`), RLS di semua tabel, fungsi `submit_message` (rate limit 3 pesan/IP/jam), dan bucket Storage `media` (publik baca, hanya owner yang menulis, maks 5 MB, hanya jpg/png/webp).
 

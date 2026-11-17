@@ -4,6 +4,16 @@ import { isSupabaseConfigured, supabaseAnonKey, supabaseUrl } from "@/lib/env";
 
 const LOGIN_PATH = "/admin/login";
 
+/**
+ * URL absolut berdasarkan host yang dilihat pengunjung. Di belakang reverse proxy (nginx),
+ * request.nextUrl berisi alamat internal (localhost:3200), jadi pakai header Host/X-Forwarded-*.
+ */
+function publicUrl(request: NextRequest, pathname: string): URL {
+  const host = request.headers.get("x-forwarded-host") ?? request.headers.get("host") ?? request.nextUrl.host;
+  const proto = request.headers.get("x-forwarded-proto") ?? request.nextUrl.protocol.replace(":", "");
+  return new URL(pathname, `${proto}://${host}`);
+}
+
 /** Refresh sesi + proteksi semua route /admin (kecuali halaman login). */
 export async function updateSession(request: NextRequest): Promise<NextResponse> {
   if (!isSupabaseConfigured) return NextResponse.next({ request });
@@ -26,23 +36,16 @@ export async function updateSession(request: NextRequest): Promise<NextResponse>
   });
 
   const { data } = await supabase.auth.getUser();
-  const { pathname } = request.nextUrl;
-  const isLogin = pathname === LOGIN_PATH;
+  const isLogin = request.nextUrl.pathname === LOGIN_PATH;
 
   if (!data.user && !isLogin) {
-    const url = request.nextUrl.clone();
-    url.pathname = LOGIN_PATH;
-    url.search = "";
-    const redirect = NextResponse.redirect(url);
+    const redirect = NextResponse.redirect(publicUrl(request, LOGIN_PATH));
     for (const c of response.cookies.getAll()) redirect.cookies.set(c);
     return redirect;
   }
 
   if (data.user && isLogin) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/admin";
-    url.search = "";
-    return NextResponse.redirect(url);
+    return NextResponse.redirect(publicUrl(request, "/admin"));
   }
 
   return response;

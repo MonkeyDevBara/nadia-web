@@ -38,6 +38,7 @@ export async function generateMetadata(): Promise<Metadata> {
   if (!site) return { title: "Portfolio" };
 
   return {
+    metadataBase: process.env.NEXT_PUBLIC_SITE_URL ? new URL(process.env.NEXT_PUBLIC_SITE_URL) : undefined,
     title: { default: site.seo_title || site.name, template: `%s — ${site.name}` },
     description: site.seo_description || undefined,
     openGraph: {
