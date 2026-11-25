@@ -10,6 +10,7 @@ import {
   LogOut,
   Mail,
   Menu,
+  Newspaper,
   Quote,
   Search,
   Settings2,
@@ -49,6 +50,7 @@ const NAV: { title: string; items: NavItem[] }[] = [
     title: "Portfolio",
     items: [
       { href: "/admin/projects", label: "Projects", icon: FolderKanban },
+      { href: "/admin/articles", label: "Artikel", icon: Newspaper },
       { href: "/admin/kategori", label: "Kategori Project", icon: Tags },
     ],
   },

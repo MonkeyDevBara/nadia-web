@@ -25,7 +25,7 @@ export default function MarkdownEditor({ id, value, onChange }: MarkdownEditorPr
           </button>
         </div>
         <p className="hidden text-xs text-stone-500 sm:block">
-          **tebal** · *miring* · - daftar · [teks](https://link)
+          ## judul · **tebal** · *miring* · - daftar · [teks](https://link)
         </p>
       </div>
       {tab === "edit" ? (

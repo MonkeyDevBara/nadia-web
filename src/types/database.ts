@@ -145,3 +145,21 @@ export type Message = {
   ip_hash: string | null;
   created_at: string;
 };
+
+export type Article = {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content_md: string;
+  tags: string[];
+  cover_url: string | null;
+  cover_width: number;
+  cover_height: number;
+  source_url: string | null;
+  status: ProjectStatus;
+  /** Tanggal terbit (YYYY-MM-DD, tanpa zona waktu). */
+  published_on: string | null;
+  created_at: string;
+  updated_at: string;
+};

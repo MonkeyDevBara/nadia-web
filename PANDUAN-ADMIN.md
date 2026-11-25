@@ -38,6 +38,7 @@ Tips foto hero: pakai PNG **tanpa background** (misalnya dari remove.bg) supaya 
 | **Testimonials** | Kutipan klien. Bisa disembunyikan satu per satu. Jika kosong, section hilang otomatis |
 | **Kontak & CTA** | Judul & teks ajakan, tombol (link WhatsApp/email), email, telepon, alamat, website, sosial media |
 | **Projects** | Kelola project/portofolio (lihat di bawah) |
+| **Artikel** | Kelola artikel yang tampil di menu Articles (lihat di bawah) |
 | **Kategori Project** | Kategori untuk filter di halaman Work |
 | **Pesan Masuk** | Pesan dari form kontak di website |
 | **SEO & Pengaturan** | Judul & deskripsi untuk Google, gambar saat link dibagikan, favicon, warna aksen, Google Analytics |
@@ -50,6 +51,14 @@ Tips foto hero: pakai PNG **tanpa background** (misalnya dari remove.bg) supaya 
 - **Featured**: tampil di halaman utama (bagian Selected Work). Maksimal **3**. Urutannya mengikuti urutan di daftar project.
 - **Urutan**: di daftar project, gunakan panah ↑ ↓.
 - **Galeri**: bisa pilih banyak gambar sekaligus; atur urutan dengan panah; isi deskripsi gambar (membantu SEO dan pembaca layar).
+
+### Artikel
+
+- **Tambah artikel**: klik **Tambah artikel**, isi judul (slug dibuat otomatis), ringkasan, tag, isi, dan cover.
+- **Isi** mendukung `## judul`, `### sub-judul`, `**tebal**`, `*miring*`, daftar dengan `- `, dan link. Tab **Preview** menunjukkan hasilnya.
+- **Status**: *Draft* = tidak tampil. *Published* = tampil di menu **Articles**, terbaru dulu.
+- **Tanggal terbit**: kosongkan untuk memakai tanggal hari ini saat dipublikasikan.
+- **Link sumber**: isi jika artikel juga terbit di tempat lain (mis. Kompasiana); muncul sebagai tombol "Read original".
 
 ### Link tombol "Let's connect"
 

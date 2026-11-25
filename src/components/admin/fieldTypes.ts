@@ -20,6 +20,7 @@ export type FieldDef =
   | (Base & { type: "text" | "url" | "email" | "tel" | "color"; placeholder?: string })
   | (Base & { type: "textarea"; rows?: number; placeholder?: string })
   | (Base & { type: "number"; min?: number; max?: number })
+  | (Base & { type: "date" })
   | (Base & { type: "toggle" })
   | (Base & { type: "select"; options: FieldOption[] })
   | (Base & { type: "image"; folder: string; aspect?: "square" | "video" | "portrait"; transparent?: boolean })

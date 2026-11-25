@@ -9,6 +9,7 @@ export const navLinks = [
   { href: "/#expertise", label: "Expertise" },
   { href: "/#process", label: "Process" },
   { href: "/#contact", label: "Contact" },
+  { href: "/articles", label: "Articles" },
 ];
 
 type HeaderProps = { site: Pick<SiteSettings, "initials" | "name" | "role"> };

@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import type { Category, Message, Project, ProjectImage, SiteSettings } from "@/types/database";
+import type { Article, Category, Message, Project, ProjectImage, SiteSettings } from "@/types/database";
 
 /** Pembacaan data untuk halaman admin (membawa sesi owner, jadi draft/hidden ikut terbaca). */
 
@@ -50,4 +50,16 @@ export async function countRows(table: string, filter?: { column: string; value:
   if (filter) query = query.eq(filter.column, filter.value);
   const { count } = await query;
   return count ?? 0;
+}
+
+export async function listArticles(): Promise<Article[]> {
+  return listRows<Article>("articles", "created_at").then((rows) => rows.reverse());
+}
+
+export async function getAdminArticle(id: string): Promise<Article | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.from("articles").select("*").eq("id", id).maybeSingle();
+  if (error) throw new Error(`Gagal membaca artikel: ${error.message}`);
+  const row: Article | null = data;
+  return row;
 }

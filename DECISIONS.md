@@ -36,3 +36,11 @@ Catatan keputusan teknis penting.
 - **Upload gambar:** dikompres di browser (Canvas, maks 1920px, WebP q80; fallback JPEG/PNG bila browser tak bisa encode WebP), validasi tipe + 5 MB sebelum upload, langsung ke bucket `media` memakai sesi owner. File yang sudah tidak dipakai tidak otomatis dihapus dari Storage.
 - **Peringatan keluar halaman:** `useUnsavedChanges` (beforeunload + intersep klik link internal) karena App Router tidak punya event route-change.
 - **Verifikasi:** diuji end-to-end terhadap mock Supabase lokal (pglite + endpoint Auth/PostgREST/Storage) karena Docker tidak tersedia; belum diuji terhadap project Supabase asli.
+
+## Fase 4 — Menu Articles
+
+- **Menu:** link "Articles" (`/articles`) di sebelah kanan Contact pada header desktop dan menu mobile.
+- **Data:** tabel `articles` (`supabase/migrations/0003_articles.sql`), terpisah dari `projects`. Tanggal terbit memakai kolom `date` (`published_on`) agar tidak bergeser karena zona waktu; bila artikel dipublikasikan tanpa tanggal, server mengisi hari ini (zona Asia/Jakarta).
+- **Akses:** RLS sama seperti projects: anon hanya membaca `published`, owner CRUD penuh.
+- **Admin:** `/admin/articles` (daftar, tambah, edit, hapus) dengan pola yang sama seperti project; urutan tampil otomatis dari tanggal terbit (tanpa tombol ↑↓).
+- **Markdown:** renderer ringan ditambah judul `##` / `###` (`#` dianggap `##`) karena artikel panjang butuh sub-judul.

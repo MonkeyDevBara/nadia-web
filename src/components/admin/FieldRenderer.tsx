@@ -102,6 +102,17 @@ export default function FieldRenderer({ field, values, error, onChange }: FieldR
         />
       );
       break;
+    case "date":
+      control = (
+        <input
+          id={id}
+          type="date"
+          value={asString(raw)}
+          onChange={(e) => set(e.target.value)}
+          className={`${inputClass} max-w-[12rem]`}
+        />
+      );
+      break;
     case "number":
       control = (
         <input

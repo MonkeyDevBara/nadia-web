@@ -1,6 +1,7 @@
 import { unstable_cache } from "next/cache";
 import { createPublicClient } from "@/lib/supabase/public";
 import type {
+  Article,
   Category,
   Certificate,
   Expertise,
@@ -27,6 +28,7 @@ export const CACHE_TAGS = {
   testimonials: "testimonials",
   stats: "stats",
   certificates: "certificates",
+  articles: "articles",
 } as const;
 
 export type CacheTag = (typeof CACHE_TAGS)[keyof typeof CACHE_TAGS];
@@ -129,4 +131,16 @@ export const getCertificates = cached("certificates", CACHE_TAGS.certificates, a
     .order("sort_order", { ascending: true });
   if (error) fail("certificates", error.message);
   return (data ?? []) as Certificate[];
+});
+
+/** Artikel published (RLS), terbaru dulu. */
+export const getPublishedArticles = cached("articles", CACHE_TAGS.articles, async (): Promise<Article[]> => {
+  const { data, error } = await createPublicClient()
+    .from("articles")
+    .select("*")
+    .eq("status", "published")
+    .order("published_on", { ascending: false, nullsFirst: false })
+    .order("created_at", { ascending: false });
+  if (error) fail("articles", error.message);
+  return (data ?? []) as Article[];
 });

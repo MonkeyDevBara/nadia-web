@@ -88,3 +88,27 @@ export const projectSchema = z.object({
 });
 
 export type ProjectInput = z.output<typeof projectSchema>;
+
+export const articleSchema = z.object({
+  title: requiredText("Judul", 150),
+  slug: requiredText("Slug", 80).refine(
+    (v) => /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(v),
+    "Slug hanya boleh huruf kecil, angka, dan tanda hubung",
+  ),
+  excerpt: optionalText("Ringkasan", 300),
+  content_md: optionalText("Isi artikel", 50000),
+  tags: stringList,
+  cover_url: imageUrl,
+  cover_width: z.number().int().positive().default(1200),
+  cover_height: z.number().int().positive().default(630),
+  source_url: linkText("Link sumber").transform((v) => (v === "" ? null : v)),
+  status: z.enum(["draft", "published"]),
+  published_on: z
+    .string()
+    .trim()
+    .refine((v) => v === "" || (/^\d{4}-\d{2}-\d{2}$/.test(v) && !Number.isNaN(Date.parse(v))), "Tanggal tidak valid")
+    .default("")
+    .transform((v) => (v === "" ? null : v)),
+});
+
+export type ArticleInput = z.output<typeof articleSchema>;

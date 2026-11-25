@@ -4,9 +4,11 @@ import PageHeader from "@/components/admin/PageHeader";
 import { countRows } from "@/lib/data/admin";
 
 export default async function DashboardPage() {
-  const [published, drafts, testimonials, unread, messages] = await Promise.all([
+  const [published, drafts, articlesPublished, articlesDraft, testimonials, unread, messages] = await Promise.all([
     countRows("projects", { column: "status", value: "published" }),
     countRows("projects", { column: "status", value: "draft" }),
+    countRows("articles", { column: "status", value: "published" }),
+    countRows("articles", { column: "status", value: "draft" }),
     countRows("testimonials"),
     countRows("messages", { column: "is_read", value: false }),
     countRows("messages"),
@@ -14,6 +16,7 @@ export default async function DashboardPage() {
 
   const cards = [
     { label: "Project dipublikasikan", value: published, hint: `${drafts} draft`, href: "/admin/projects" },
+    { label: "Artikel dipublikasikan", value: articlesPublished, hint: `${articlesDraft} draft`, href: "/admin/articles" },
     { label: "Testimoni", value: testimonials, hint: "Kelola di menu Testimonials", href: "/admin/testimonials" },
     { label: "Pesan belum dibaca", value: unread, hint: `${messages} pesan total`, href: "/admin/pesan" },
   ];
@@ -21,6 +24,7 @@ export default async function DashboardPage() {
   const shortcuts = [
     { href: "/admin/profil", label: "Ubah foto & teks hero" },
     { href: "/admin/projects/new", label: "Tambah project baru" },
+    { href: "/admin/articles/new", label: "Tulis artikel baru" },
     { href: "/admin/kontak", label: "Ubah kontak & tombol CTA" },
     { href: "/admin/seo", label: "Atur SEO & favicon" },
   ];
@@ -41,7 +45,7 @@ export default async function DashboardPage() {
         }
       />
 
-      <ul className="grid gap-4 sm:grid-cols-3">
+      <ul className="grid gap-4 sm:grid-cols-2">
         {cards.map((c) => (
           <li key={c.label}>
             <Link href={c.href} className="block rounded-lg border border-stone-200 bg-white p-5 transition-colors hover:border-stone-400">
